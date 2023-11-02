@@ -1,0 +1,27 @@
+{
+    "name": "douyin-signature",
+    "type": "module",
+    "version": "0.0.1",
+    "description": "douyin signature mstoken xbogus",
+    "author": "jiangweiye <jiangweiye@outlook.com> (https://github.com/jwyGithub)",
+    "license": "SEE LICENSE IN LICENSE",
+    "homepage": "https://github.com/jwyGithub/douyin-signature.git",
+    "keywords": [
+        "douyin",
+        "signaure",
+        "mstoken",
+        "xbogus"
+    ],
+    "scripts": {
+        "dev": "nodemon app.js",
+        "dev:debug": "nodemon  --inspect-brk app.js",
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@jiangweiye/eslint-config": "^0.1.1",
+        "@types/node": "^20.8.10",
+        "eslint": "^8.52.0",
+        "nodemon": "^3.0.1"
+    }
+}
+
