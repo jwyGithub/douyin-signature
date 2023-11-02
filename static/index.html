@@ -97,6 +97,7 @@
                         alert('复制成功');
                     }
                 }
+                getSignBtn.disabled = false;
             }
 
             async function getSign() {
@@ -104,6 +105,7 @@
                     alert('请输入地址');
                     return;
                 }
+                getSignBtn.disabled = true;
                 const url = link.value;
                 // 获取location
                 const { location } = await fetch('/getLocation', {
