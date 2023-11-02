@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DouYin Signaure</title>
+    </head>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #app {
+            display: flex;
+            width: 100vw;
+            flex-direction: column;
+            padding-left: 20%;
+        }
+        .app-container {
+            margin-top: 10%;
+        }
+        .label {
+            width: 50px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .link {
+            width: 500px;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0 10px;
+            margin-right: 10px;
+        }
+        .link:focus {
+            outline: none;
+            border-color: #1890ff;
+        }
+        .getSign {
+            width: 200px;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .desc {
+            margin-top: 100px;
+        }
+    </style>
+    <body>
+        <div id="app">
+            <div class="app-container">
+                <span class="label">地址：</span>
+                <input type="text" class="link" />
+                <button class="getSign">获取无水印视频链接</button>
+            </div>
+
+            <div class="desc">
+                <p>1. 请在上方输入框中输入抖音分享链接</p>
+                <p>2. 点击获取无水印视频链接按钮</p>
+                <p>3. 点击复制按钮，即可复制无水印视频链接</p>
+                <p>4. 在浏览器地址栏粘贴地址</p>
+                <p>5. 右键保存即可</p>
+            </div>
+        </div>
+
+        <script>
+            const link = document.querySelector('.link');
+            link.value = 'https://v.douyin.com/idEAEkV8/';
+            const getSignBtn = document.querySelector('.getSign');
+
+            function download(url, title) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(url).then(
+                        function () {
+                            alert('复制成功');
+                        },
+                        function () {
+                            alert('复制失败');
+                        }
+                    );
+                } else {
+                    const input = document.createElement('input');
+                    input.setAttribute('readonly', 'readonly');
+                    input.setAttribute('value', url);
+                    document.body.appendChild(input);
+                    input.select();
+                    input.setSelectionRange(0, 9999);
+                    if (document.execCommand('copy')) {
+                        document.execCommand('copy');
+                        alert('复制成功');
+                    }
+                }
+            }
+
+            async function getSign() {
+                if (!link.value) {
+                    alert('请输入地址');
+                    return;
+                }
+                const url = link.value;
+                // 获取location
+                const { location } = await fetch('/getLocation', {
+                    method: 'POST',
+                    body: JSON.stringify({ url })
+                }).then(res => res.json());
+                const { item_ids } = await fetch('/getItemIds', {
+                    method: 'POST',
+                    body: JSON.stringify({ location })
+                }).then(res => res.json());
+                const { video_info_url } = await fetch('/getVideoInfoUrl', {
+                    method: 'POST',
+                    body: JSON.stringify({ location, item_ids })
+                }).then(res => res.json());
+                const { video_url, video_title } = await fetch('/getVideoUrl', {
+                    method: 'POST',
+                    body: JSON.stringify({ video_url: video_info_url })
+                }).then(res => res.json());
+
+                download(video_url, video_title);
+            }
+
+            getSignBtn.addEventListener('click', getSign);
+        </script>
+    </body>
+</html>
+
