@@ -82,3 +82,16 @@ export function msToken(length) {
     return Array.from(randomBytes, byte => characters[byte % characters.length]).join('');
 }
 
+/**
+ * @description 解析url
+ * @param {string} url
+ * @returns {string} 解析后的url
+ */
+export function parseUrl(url) {
+    const reg = /https:\/\/v.douyin.com\/\w+\//;
+    const match = url.match(reg);
+    if (match) {
+        return match[0];
+    }
+}
+

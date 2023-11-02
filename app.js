@@ -2,7 +2,7 @@
 import http from 'node:http';
 import path from 'node:path';
 import fs from 'node:fs';
-import { getRequestUrl, getRouteUrl, request } from './src/shared/shared.js';
+import { getRequestUrl, getRouteUrl, request, parseUrl } from './src/shared/shared.js';
 import { getSign } from './src/core/getSign.js';
 
 /**
@@ -20,7 +20,8 @@ const STATIC_PATH = path.resolve(__dirname, './static');
 const routes = {
     // 获取location
     getLocation: (url, req, res) => {
-        const { url: locationUrl } = req.body;
+        const { url: base_url } = req.body;
+        const locationUrl = parseUrl(base_url);
 
         request(locationUrl, {
             method: 'GET'
@@ -174,7 +175,15 @@ function router(url, req, res) {
 function createServer() {
     const server = http.createServer((req, res) => {
         const url = getRequestUrl('http:', req.headers.host, req.url);
-        router(url, req, res);
+        if (url.includes('/static')) {
+            const { base } = path.parse(url);
+            const filename = path.resolve(STATIC_PATH, base);
+            const content = fs.readFileSync(filename);
+            res.statusCode = 200;
+            res.end(content);
+        } else {
+            router(url, req, res);
+        }
     });
 
     server.listen(80);
