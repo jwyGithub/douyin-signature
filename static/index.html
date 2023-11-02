@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="referrer" content="no-referrer" />
         <title>DouYin Signaure</title>
     </head>
 
@@ -58,7 +59,7 @@
             <div class="app-container">
                 <span class="label">地址：</span>
                 <input type="text" class="link" />
-                <button class="getSign">获取无水印视频链接</button>
+                <button class="getSign">下载视频</button>
             </div>
 
             <div class="desc">
@@ -76,28 +77,15 @@
             const getSignBtn = document.querySelector('.getSign');
 
             function download(url, title) {
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(url).then(
-                        function () {
-                            alert('复制成功');
-                        },
-                        function () {
-                            alert('复制失败');
-                        }
-                    );
-                } else {
-                    const input = document.createElement('input');
-                    input.setAttribute('readonly', 'readonly');
-                    input.setAttribute('value', url);
-                    document.body.appendChild(input);
-                    input.select();
-                    input.setSelectionRange(0, 9999);
-                    if (document.execCommand('copy')) {
-                        document.execCommand('copy');
-                        alert('复制成功');
-                    }
-                }
-                getSignBtn.disabled = false;
+                fetch(url)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = `${title}.mp4`;
+                        a.click();
+                        getSignBtn.disabled = false;
+                    });
             }
 
             async function getSign() {
