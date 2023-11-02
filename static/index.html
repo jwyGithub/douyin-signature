@@ -4,160 +4,34 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="referrer" content="no-referrer" />
-        <title>DouYin Signaure</title>
+        <link rel="stylesheet" href="/static/index.css" />
+        <title>江伟YE千宁</title>
     </head>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        #app {
-            display: flex;
-            width: 100vw;
-            flex-direction: column;
-            padding-left: 20%;
-        }
-        .app-container {
-            margin-top: 10%;
-        }
-        .label {
-            width: 50px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            font-size: 14px;
-        }
-        .link {
-            width: 500px;
-            height: 30px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 0 10px;
-            margin-right: 10px;
-        }
-        .link:focus {
-            outline: none;
-            border-color: #1890ff;
-        }
-        .getSign {
-            width: 200px;
-            height: 30px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-
-        .desc {
-            margin-top: 100px;
-        }
-
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            display: none;
-        }
-
-        .loading::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 6px solid #fff;
-            border-color: #fff transparent #fff transparent;
-            animation: loading 1.2s linear infinite;
-        }
-
-        @keyframes loading {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
     <body>
         <div id="app">
-            是千宁吗？
-            <div class="app-container">
-                <span class="label">地址：</span>
-                <input type="text" class="link" />
-                <button class="getSign">下载视频</button>
-            </div>
+            <header class="app-header">
+                <div class="app-header-download">
+                    <span>视频地址：</span>
+                    <input placeholder="请输入" />
+                    <button>解析</button>
+                </div>
+            </header>
 
-            <div class="desc">
-                <p>1. 复制抖音分享链接</p>
-                <p>2. 粘贴到地址栏</p>
-                <p>3. 点击下载视频</p>
-            </div>
+            <main class="app-main">
+                <ul>
+                    <li>
+                        <span>萨纳酒店拿手机看电脑表舅卡吧</span>
+                        <video
+                            src="https://v95-hb-cold.douyinvod.com/2b1bcdaf2abd2d6862ef1b302d2acf7a/65438724/video/tos/cn/tos-cn-ve-15c001-alinc2/osA5GsIqvBGf6xZfWBIffAAHYSEYArb1Eibfcv/?a=1128&ch=0&cr=0&dr=0&cd=0%7C0%7C0%7C0&cv=1&br=3091&bt=3091&cs=0&ds=3&ft=bvjWJkQQqUisf_0ZPo0OW_EklpPiXgHy5FVJE9MooF0PD-I&mime_type=video_mp4&qs=0&rc=Z2c8NGc5ZzY5aDU4NDhoZUBpM2Q1dTg6Zm9nbzMzNGkzM0BfLmBjYy4xXzMxYC5hYjEtYSM1M3NgcjRfcy1gLS1kLTBzcw%3D%3D&btag=e00088000&dy_q=1698920715&feature_id=f0150a16a324336cda5d6dd0b69ed299&l=20231102182515BBB97E2FFB310B030819"
+                            controls
+                        ></video>
+                        <button>下载</button>
+                    </li>
+                </ul>
+            </main>
         </div>
-
-        <div class="loading"></div>
-
-        <script>
-            const link = document.querySelector('.link');
-            const loading = document.querySelector('.loading');
-            link.value =
-                '7.64 05/25 J@i.cA LWz:/  复制打开抖音，看看【泡芙味的女孩子O的作品】降温了！该吃麻酱涮肉啦！！！  https://v.douyin.com/iR16VETx/';
-            const getSignBtn = document.querySelector('.getSign');
-
-            function download(url, title) {
-                fetch(url)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = `${title}.mp4`;
-                        a.click();
-                        getSignBtn.disabled = false;
-                        loading.style.display = 'none';
-                    });
-            }
-
-            async function getSign() {
-                if (!link.value) {
-                    alert('请输入地址');
-                    return;
-                }
-                loading.style.display = 'flex';
-
-                getSignBtn.disabled = true;
-
-                const url = link.value;
-                // 获取location
-                const { location } = await fetch('/getLocation', {
-                    method: 'POST',
-                    body: JSON.stringify({ url })
-                }).then(res => res.json());
-                const { item_ids } = await fetch('/getItemIds', {
-                    method: 'POST',
-                    body: JSON.stringify({ location })
-                }).then(res => res.json());
-                const { video_info_url } = await fetch('/getVideoInfoUrl', {
-                    method: 'POST',
-                    body: JSON.stringify({ location, item_ids })
-                }).then(res => res.json());
-                const { video_url, video_title } = await fetch('/getVideoUrl', {
-                    method: 'POST',
-                    body: JSON.stringify({ video_url: video_info_url })
-                }).then(res => res.json());
-
-                download(video_url, video_title);
-            }
-
-            getSignBtn.addEventListener('click', getSign);
-        </script>
     </body>
+    <script src="/static/index.js"></script>
 </html>
 
