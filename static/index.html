@@ -53,6 +53,39 @@
         .desc {
             margin-top: 100px;
         }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+
+        .loading::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: loading 1.2s linear infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <body>
         <div id="app">
@@ -71,8 +104,11 @@
             </div>
         </div>
 
+        <div class="loading"></div>
+
         <script>
             const link = document.querySelector('.link');
+            const loading = document.querySelector('.loading');
             link.value = 'https://v.douyin.com/idEAEkV8/';
             const getSignBtn = document.querySelector('.getSign');
 
@@ -85,6 +121,7 @@
                         a.download = `${title}.mp4`;
                         a.click();
                         getSignBtn.disabled = false;
+                        loading.style.display = 'none';
                     });
             }
 
@@ -93,7 +130,10 @@
                     alert('请输入地址');
                     return;
                 }
+                loading.style.display = 'flex';
+
                 getSignBtn.disabled = true;
+
                 const url = link.value;
                 // 获取location
                 const { location } = await fetch('/getLocation', {
