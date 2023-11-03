@@ -3,11 +3,18 @@
     padding: 0;
     box-sizing: border-box;
 }
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 
 #app {
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    padding: 20px 0;
+    overflow: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 .app-header {
@@ -76,6 +83,7 @@
     border-radius: 4px;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 .app-main .app-main-title {
     font-size: 16px;
@@ -148,3 +156,4 @@
         transform: rotate(360deg);
     }
 }
+
