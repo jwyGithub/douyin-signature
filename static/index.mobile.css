@@ -17,12 +17,18 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
+.download-count {
+    width: 90%;
+    font-size: 16px;
+    margin: 0 auto;
+}
+
 .app-header {
     width: 90%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 30px auto;
+    margin: 20px auto;
 }
 .app-header .app-header-download {
     display: flex;

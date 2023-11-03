@@ -1,19 +1,10 @@
 const getSignatureMap = {
-    GET_LOCATION: {
-        url: '/getLocation',
+    GET_REAL_VIDEO_URL: {
+        url: '/getRealVideoUrl',
         data: url => ({ url })
     },
-    GET_ITEM_IDS: {
-        url: '/getItemIds',
-        data: location => ({ location })
-    },
-    GET_VIDEO_INFO_URL: {
-        url: '/getVideoInfoUrl',
-        data: (location, item_ids) => ({ location, item_ids })
-    },
-    GET_VIDEO_URL: {
-        url: '/getVideoUrl',
-        data: video_url => ({ video_url })
+    GET_DOWNLOAD_COUNT: {
+        url: '/getDownloadCount'
     }
 };
 
@@ -49,28 +40,43 @@ async function httpGet(url) {
  * @param {string} url 视频地址
  */
 async function getSignature(url) {
-    const { location } = await httpPost(getSignatureMap.GET_LOCATION.url, getSignatureMap.GET_LOCATION.data(url));
-    const { item_ids } = await httpPost(getSignatureMap.GET_ITEM_IDS.url, getSignatureMap.GET_ITEM_IDS.data(location));
-    const { video_info_url } = await httpPost(
-        getSignatureMap.GET_VIDEO_INFO_URL.url,
-        getSignatureMap.GET_VIDEO_INFO_URL.data(location, item_ids)
-    );
-    const { video_title, video_url } = await httpPost(
-        getSignatureMap.GET_VIDEO_URL.url,
-        getSignatureMap.GET_VIDEO_URL.data(video_info_url)
-    );
+    try {
+        const { video_title, video_url } = await httpPost(
+            getSignatureMap.GET_REAL_VIDEO_URL.url,
+            getSignatureMap.GET_REAL_VIDEO_URL.data(url)
+        );
 
-    const titleEle = document.querySelector('.app-main-title');
-    const videoEle = document.querySelector('.app-main-video > video');
-    if (titleEle) titleEle.innerText = video_title;
-    if (videoEle) {
-        videoEle.src = video_url;
-        videoEle.setAttribute('data-video', video_title);
-        videoEle.controls = true;
+        const titleEle = document.querySelector('.app-main-title');
+        const videoEle = document.querySelector('.app-main-video > video');
+        if (titleEle) titleEle.innerText = video_title;
+        if (videoEle) {
+            videoEle.src = video_url;
+            videoEle.setAttribute('data-video', video_title);
+            videoEle.controls = true;
+        }
+        getDownloadCount();
+    } catch (error) {
+        console.error(error);
+        alert('获取视频地址失败');
+    } finally {
+        const parseElement = document.querySelector('.parseButton');
+        const downloadElement = document.querySelector('.app-main-download');
+        parseElement.disabled = false;
+        downloadElement.disabled = false;
     }
 }
 
+function getDownloadCount() {
+    fetch(getSignatureMap.GET_DOWNLOAD_COUNT.url)
+        .then(res => res.json())
+        .then(({ count }) => {
+            const downloadCountEle = document.querySelector('.download-count > span');
+            if (downloadCountEle) downloadCountEle.innerText = count;
+        });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+    getDownloadCount();
     const parseElement = document.querySelector('.parseButton');
     const parseUrl = document.querySelector('.parseUrlInput');
     const downloadElement = document.querySelector('.app-main-download');
@@ -91,6 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!videoEle) return;
         const videoUrl = videoEle.src;
         const videoTitle = videoEle.getAttribute('data-video');
+        if (!videoUrl) return;
         loadingElement.style.display = 'flex';
         parseElement.disabled = true;
         downloadElement.disabled = true;
