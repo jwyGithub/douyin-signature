@@ -66,6 +66,27 @@ const routes = {
             );
         }
     },
+
+    getSingature: (url, req, res) => {
+        try {
+            const { location } = req.body;
+            const { xbogus } = getSign(location);
+            res.statusCode = 200;
+            res.end(
+                JSON.stringify({
+                    xbogus
+                })
+            );
+        } catch (error) {
+            console.error(error);
+            res.statusCode = 400;
+            res.end(
+                JSON.stringify({
+                    xbogus: ''
+                })
+            );
+        }
+    },
     // 获取video_info_url
     getVideoInfoUrl: (url, req, res) => {
         try {
