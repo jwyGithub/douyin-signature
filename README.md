@@ -1,5 +1,31 @@
 # DouYin Sign
 
+## 获取 signaure
+
+### Method: POST
+
+> ```
+> https://douyin-signature-delta.vercel.app/getSingature
+> ```
+
+### Body (**raw**)
+
+```json
+{
+    "location": "https://www.iesdouyin.com/share/video/7296353628263140620/?region=CN&mid=7296353681744726793&u_code=l7665j8k&did=MS4wLjABAAAAVbQA55vA0iRm1pbUprb_Nclc0FZwD_HURHyDsc6aIfPxoE_w43guh0L8v94j80l_&iid=MS4wLjABAAAAbvLI3Z-1dv5A4iwdbF4Aal5H29-kI2dI641Wjzm1OVABS6q8xC2V0dnRnehCZhX4&with_sec_did=1&titleType=title&share_sign=PCi8yPNX9JjpYVslnMrQXoYphHkRHv2WPfQOwExJmpo-&share_version=270400&ts=1698823547&from_ssr=1&timestamp=1698824000&utm_campaign=client_share&app=aweme&utm_medium=ios&tt_from=copy&utm_source=copy"
+}
+```
+
+### Response
+
+```json
+{
+    "xbogus": "DFSzswSLsJxANnEftFdmKU9WcBnW"
+}
+```
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
 ## 获取 location
 
 ### Method: POST
