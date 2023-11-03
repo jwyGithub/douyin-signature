@@ -150,26 +150,30 @@ const routes = {
  * @param {string} url
  */
 function router(url, req, res) {
-    const route = getRouteUrl(url);
-    const bodyData = [];
-    req.on('data', chunk => {
-        bodyData.push(chunk);
-    });
-    req.on('end', () => {
-        req.body = req.method === 'GET' ? {} : JSON.parse(bodyData.toString() || '');
-        if (!route) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html');
-            const index_path = path.resolve(STATIC_PATH, './index.html');
-            const content = fs.readFileSync(index_path);
-            res.end(content);
-        } else {
-            routes[route] && routes[route](url, req, res);
-        }
-    });
-    req.on('error', error => {
+    try {
+        const route = getRouteUrl(url);
+        const bodyData = [];
+        req.on('data', chunk => {
+            bodyData.push(chunk);
+        });
+        req.on('end', () => {
+            req.body = req.method === 'GET' ? {} : JSON.parse(bodyData.toString() || '');
+            if (!route) {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html');
+                const index_path = path.resolve(STATIC_PATH, './index.html');
+                const content = fs.readFileSync(index_path);
+                res.end(content);
+            } else {
+                routes[route] && routes[route](url, req, res);
+            }
+        });
+        req.on('error', error => {
+            console.error(error);
+        });
+    } catch (error) {
         console.error(error);
-    });
+    }
 }
 
 function createServer() {

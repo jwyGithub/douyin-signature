@@ -55,9 +55,60 @@ async function getSignature(url) {
         getSignatureMap.GET_VIDEO_INFO_URL.url,
         getSignatureMap.GET_VIDEO_INFO_URL.data(location, item_ids)
     );
-    const { video_url, video_title } = await httpPost(
+    const { video_title, video_url } = await httpPost(
         getSignatureMap.GET_VIDEO_URL.url,
         getSignatureMap.GET_VIDEO_URL.data(video_info_url)
     );
+
+    const titleEle = document.querySelector('.app-main-title');
+    const videoEle = document.querySelector('.app-main-video > video');
+    if (titleEle) titleEle.innerText = video_title;
+    if (videoEle) {
+        videoEle.src = video_url;
+        videoEle.setAttribute('data-video', video_title);
+        videoEle.controls = true;
+    }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const parseElement = document.querySelector('.parseButton');
+    const parseUrl = document.querySelector('.parseUrlInput');
+    const downloadElement = document.querySelector('.app-main-download');
+    const loadingElement = document.querySelector('.loading');
+
+    parseElement.addEventListener('click', async () => {
+        const url = parseUrl.value;
+        if (!url) {
+            alert('请输入视频url');
+            return;
+        }
+        loadingElement.style.display = 'flex';
+        await getSignature(url);
+        loadingElement.style.display = 'none';
+    });
+    downloadElement.addEventListener('click', () => {
+        const videoEle = document.querySelector('.app-main-video > video');
+        if (!videoEle) return;
+        const videoUrl = videoEle.src;
+        const videoTitle = videoEle.getAttribute('data-video');
+        loadingElement.style.display = 'flex';
+        parseElement.disabled = true;
+        downloadElement.disabled = true;
+
+        httpGet(videoUrl)
+            .then(res => {
+                const url = window.URL.createObjectURL(res);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${videoTitle}.mp4`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .finally(() => {
+                parseElement.disabled = false;
+                downloadElement.disabled = false;
+                loadingElement.style.display = 'none';
+            });
+    });
+});
 
