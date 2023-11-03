@@ -15,7 +15,7 @@ const BASE_URL = 'https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const STATIC_PATH = path.resolve(__dirname, './static');
-const COUNT_PATH = path.resolve(__dirname, './count.txt');
+const COUNT_PATH = path.resolve(process.cwd(), './src/count.txt');
 
 /** @type {Route} */
 const routes = {
