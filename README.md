@@ -121,6 +121,20 @@
 }
 ```
 
+### Response
+
+```json
+{
+    "status_code": 0,
+    "item_list":...,
+    "filter_list": [],
+    "extra": {
+        "now": 1698993810101,
+        "logid": "2023110314432947D61B4A38A4FA4FB046"
+    }
+}
+```
+
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 ## 获取无水印视频地址
@@ -139,7 +153,39 @@
 }
 ```
 
+### Response
+
+```json
+{
+    "video_url": "https://v11-hl-o.zjcdn.com/daf46f002a278107273bdc33a52e855c/6544a4e0/video/tos/cn/tos-cn-ve-15c001-alinc2/og41LQDzyB2NiiNfhCXOiAI1AAmBtodgOeExRB/?a=1128&ch=0&cr=0&dr=0&cd=0%7C0%7C0%7C0&cv=1&br=2031&bt=2031&cs=0&ds=3&ft=F-_ezGTe0BN16UvjVQaSpv.7usnJ9ydmaglc&mime_type=video_mp4&qs=0&rc=NzZmZTo5OGc7ODlmZzY1O0BpMzVybWc6ZjN3bzMzNGkzM0A2NGBiYF80XzAxNjRiLmNjYSNwb2hucjRvaS1gLS1kLTBzcw%3D%3D&btag=e00088000&dy_q=1698993863&feature_id=f0150a16a324336cda5d6dd0b69ed299&l=20231103144423B7C6ED08F0E3B252EE83",
+    "video_title": "...."
+}
+```
+
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
----
+## 直接获取无水印视频地址
+
+### Method: POST
+
+> ```
+> https://douyin-signature-delta.vercel.app/getRealVideoUrl
+> ```
+
+### Body (**raw**)
+
+```json
+{
+    "url": "https://v.douyin.com/idEAEkV8/"
+}
+```
+
+### Response
+
+```json
+{
+    "video_url": "https://v11-hl-o.zjcdn.com/daf46f002a278107273bdc33a52e855c/6544a4e0/video/tos/cn/tos-cn-ve-15c001-alinc2/og41LQDzyB2NiiNfhCXOiAI1AAmBtodgOeExRB/?a=1128&ch=0&cr=0&dr=0&cd=0%7C0%7C0%7C0&cv=1&br=2031&bt=2031&cs=0&ds=3&ft=F-_ezGTe0BN16UvjVQaSpv.7usnJ9ydmaglc&mime_type=video_mp4&qs=0&rc=NzZmZTo5OGc7ODlmZzY1O0BpMzVybWc6ZjN3bzMzNGkzM0A2NGBiYF80XzAxNjRiLmNjYSNwb2hucjRvaS1gLS1kLTBzcw%3D%3D&btag=e00088000&dy_q=1698993863&feature_id=f0150a16a324336cda5d6dd0b69ed299&l=20231103144423B7C6ED08F0E3B252EE83",
+    "video_title": "...."
+}
+```
 
