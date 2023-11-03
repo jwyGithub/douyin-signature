@@ -2,9 +2,6 @@ const getSignatureMap = {
     GET_REAL_VIDEO_URL: {
         url: '/getRealVideoUrl',
         data: url => ({ url })
-    },
-    GET_DOWNLOAD_COUNT: {
-        url: '/getDownloadCount'
     }
 };
 
@@ -54,7 +51,6 @@ async function getSignature(url) {
             videoEle.setAttribute('data-video', video_title);
             videoEle.controls = true;
         }
-        getDownloadCount();
     } catch (error) {
         console.error(error);
         alert('获取视频地址失败');
@@ -66,17 +62,7 @@ async function getSignature(url) {
     }
 }
 
-function getDownloadCount() {
-    fetch(getSignatureMap.GET_DOWNLOAD_COUNT.url)
-        .then(res => res.json())
-        .then(({ count }) => {
-            const downloadCountEle = document.querySelector('.download-count > span');
-            if (downloadCountEle) downloadCountEle.innerText = count;
-        });
-}
-
 window.addEventListener('DOMContentLoaded', () => {
-    getDownloadCount();
     const parseElement = document.querySelector('.parseButton');
     const parseUrl = document.querySelector('.parseUrlInput');
     const downloadElement = document.querySelector('.app-main-download');

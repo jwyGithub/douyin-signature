@@ -15,7 +15,6 @@ const BASE_URL = 'https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const STATIC_PATH = path.resolve(__dirname, './static');
-const COUNT_PATH = path.resolve(process.cwd(), './src/count.txt');
 
 /** @type {Route} */
 const routes = {
@@ -157,7 +156,6 @@ const routes = {
                             video_title
                         })
                     );
-                    setDownloadCount();
                 });
             })
             .catch(error => {
@@ -216,40 +214,13 @@ const routes = {
                     video_title
                 })
             );
-            setDownloadCount();
         } catch (error) {
             console.error(error);
             res.statusCode = 400;
             res.end(error);
         }
-    },
-    // 获取已经下载的次数
-    getDownloadCount: (url, req, res) => {
-        try {
-            const count = fs.readFileSync(COUNT_PATH, { encoding: 'utf-8' });
-            res.statusCode = 200;
-            res.end(
-                JSON.stringify({
-                    count
-                })
-            );
-        } catch (error) {
-            console.error(error);
-            res.statusCode = 400;
-            res.end(
-                JSON.stringify({
-                    count: 0
-                })
-            );
-        }
     }
 };
-
-function setDownloadCount() {
-    const count = fs.readFileSync(COUNT_PATH, { encoding: 'utf-8' });
-    const _count = Number(count) + 1;
-    fs.writeFileSync(COUNT_PATH, _count + '');
-}
 
 /**
  * @description 路由
