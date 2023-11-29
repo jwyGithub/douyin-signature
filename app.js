@@ -219,6 +219,43 @@ const routes = {
             res.statusCode = 400;
             res.end(error);
         }
+    },
+
+    // 获取video_info
+    getVideoInfoByShortUrl: async (url, req, res) => {
+        try {
+            const { url: base_url } = req.body;
+            // 1. 获取location
+            const locationUrl = parseUrl(base_url);
+            const { headers } = await request(locationUrl, {
+                method: 'GET'
+            });
+            const location = headers.location;
+            // 2. 获取item_ids
+            const { dir } = path.parse(location);
+            const { base: item_ids } = path.parse(dir);
+            // 3. 获取xbogus
+            const { xbogus } = getSign(location);
+            // 4. 获取video_info_url
+            const query = {
+                reflow_source: 'reflow_page',
+                item_ids: item_ids,
+                a_bogus: xbogus
+            };
+            const video_info_url = `${BASE_URL}?${new URLSearchParams(query).toString()}`;
+            // 5. 获取video_info
+            const { data } = await request(video_info_url, {
+                method: 'GET'
+            });
+            res.statusCode = 200;
+            // 设置返回编码为utf-8
+            res.setHeader('Content-Type', 'application/json;charset=UTF-8');
+            res.end(data);
+        } catch (error) {
+            console.error(error);
+            res.statusCode = 400;
+            res.end(error);
+        }
     }
 };
 
