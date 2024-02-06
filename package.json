@@ -1,25 +1,26 @@
 {
     "name": "douyin-signature",
+    "version": "1.0.0",
+    "description": "douyin signature vercel serverless function",
+    "main": "index.js",
     "type": "module",
-    "version": "0.0.1",
-    "description": "douyin signature mstoken xbogus",
-    "author": "jiangweiye <jiangweiye@outlook.com> (https://github.com/jwyGithub)",
-    "license": "SEE LICENSE IN LICENSE",
-    "homepage": "https://github.com/jwyGithub/douyin-signature.git",
     "keywords": [
         "douyin",
-        "signaure",
-        "mstoken",
-        "xbogus"
+        "signature"
     ],
-    "scripts": {
-        "dev": "nodemon app.js",
-        "dev:debug": "nodemon  --inspect-brk app.js",
-        "lint": "eslint ."
+    "engines": {
+        "node": "18.x",
+        "npm": "10.x"
     },
+    "author": "jiangweiye <jiangweiye@outlook.com> (https://github.com/jwyGithub)",
+    "license": "MIT",
+    "homepage": "https://github.com/jwyGithub/douyin-signature",
     "devDependencies": {
-        "@types/node": "^20.8.10",
-        "nodemon": "^3.0.1"
+        "@jiangweiye/tsconfig": "^0.0.7",
+        "@types/node": "^20.11.16",
+        "@vercel/node": "^3.0.17",
+        "pino": "^8.18.0",
+        "typescript": "^5.3.3"
     }
 }
 
